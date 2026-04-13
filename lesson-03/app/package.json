@@ -1,0 +1,23 @@
+{
+  "name": "lesson-03-welcome-app",
+  "version": "1.0.0",
+  "description": "Super simple Node.js app with a welcome page.",
+  "private": true,
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "esbuild src/server.ts --bundle --platform=node --target=node18 --outfile=dist/server.js",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.15.3",
+    "esbuild": "^0.25.3",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
