@@ -1,0 +1,8 @@
+# Build image locally: lesson-03-image
+docker build -t lesson-03-image .
+
+# Run image from local repository
+docker run --rm -p 8080:3000 lesson-03-image
+
+# Run image from Docker Hub
+docker run --rm -p 8080:3000 xcbxcbxxabzc/lesson-03-image
