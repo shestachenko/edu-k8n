@@ -1,0 +1,44 @@
+# Swarm stack file: no "build" or "container_name"; depends_on is a plain list.
+# Build the image first: docker compose -f docker-compose.yml build
+# Deploy: docker stack deploy -c docker-compose.swarm.yml lesson-05
+
+services:
+  app:
+    image: course-app:lesson-05
+    environment:
+      PORT: 8080
+      APP_STORE: redis
+      APP_REDIS_URL: redis://redis:6379/0
+    ports:
+      - "3000:8080"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz')",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    depends_on:
+      - redis
+    deploy:
+      replicas: 2
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  redis-data:
