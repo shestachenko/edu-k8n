@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: ../apps/course-app
+    image: course-app:lesson-05
+    container_name: lesson-05-course-app
+    environment:
+      PORT: 8080
+      APP_STORE: redis
+      APP_REDIS_URL: redis://redis:6379/0
+    ports:
+      - "3000:8080"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz')",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    container_name: lesson-05-redis
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  redis-data:
