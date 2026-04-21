@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: ../apps/course-app
+    image: course-app:local
+    container_name: lesson-04-course-app
+    environment:
+      PORT: 8080
+      APP_STORE: redis
+      APP_REDIS_URL: redis://redis:6379/0
+    ports:
+      - "3000:8080"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: lesson-04-redis
+    ports:
+      - "6379:6379"
