@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "course-app.fullname" . }}-config
+  labels:
+    app: course-app
+data:
+  LOG_LEVEL: {{ .Values.config.LOG_LEVEL }}
+  APP_NAME: {{ .Values.config.APP_NAME }}
+  PORT: {{ .Values.config.PORT }}
+  APP_STORE: {{ .Values.config.APP_STORE }}
+  APP_REDIS_URL: {{ printf "redis://%s:6379" (include "course-app.redisHost" .) }}
