@@ -1,0 +1,28 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "course-app.fullname" . }}
+  namespace: {{ include "course-app.namespace" . }}
+  labels:
+    app: course-app
+  annotations:
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ if .Values.tls.secretName }}{{ .Values.tls.secretName }}{{ else }}{{ include "course-app.fullname" . }}-tls{{ end }}
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "course-app.fullname" . }}
+                port:
+                  number: {{ .Values.service.port }}
+{{- end }}

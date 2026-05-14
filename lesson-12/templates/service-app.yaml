@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "course-app.fullname" . }}
+  namespace: {{ include "course-app.namespace" . }}
+  labels:
+    app: course-app
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: course-app
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
