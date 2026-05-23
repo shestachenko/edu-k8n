@@ -1,0 +1,10 @@
+apiVersion: v2
+name: course-app
+description: Course application with Redis and Traefik ingress
+type: application
+version: 0.2.0
+appVersion: "2.0"
+dependencies:
+  - name: redis
+    version: 25.5.2
+    repository: https://charts.bitnami.com/bitnami
